@@ -2,8 +2,12 @@
 
 #include <stdio.h>
 
+extern void write_ppm();
+
 int main() {
-    printf("Welcome to my raytracer!\n");
+    fprintf(stderr, "Welcome to my raytracer!\n");
+
+    write_ppm();
 
     return 0;
 }
