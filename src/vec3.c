@@ -48,6 +48,13 @@ double vec3_length_squared(const vec3* vec) {
     return e0_sqrd + e1_sqrd + e2_sqrd;
 }
 
+void vec3_unit(const vec3* vec, vec3* out) {
+    double len = vec3_length(vec);
+
+    *out = *vec;
+    vec3_scale(out, 1 / len);
+}
+
 double vec3_dot(const vec3* a, const vec3* b) {
     double m0, m1, m2;
 
