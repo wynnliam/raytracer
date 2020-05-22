@@ -7,3 +7,5 @@ Tools you need:
 * [MinGW](http://www.mingw.org/)
 
 Simply import the project into Codeblocks and build it.
+
+Now, when running it, you want to navigate to `[PROJECT ROOT]/bin/Debug/` and *in the command line* run `./raytracer.out > image.ppm`. This will actually write the image to a file `image.ppm`.
