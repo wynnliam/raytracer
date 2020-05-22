@@ -58,3 +58,9 @@ double vec3_dot(const vec3* a, const vec3* b) {
     return m0 + m1 + m2;
 }
 
+void vec3_cross(const vec3* a, const vec3* b, vec3* out) {
+    out->_e0 = a->_e1 * b->_e2 - a->_e2 * b->_e1;
+    out->_e1 = a->_e2 * b->_e0 - a->_e0 * b->_e2;
+    out->_e2 = a->_e0 * b->_e1 - a->_e1 * b->_e0;
+}
+

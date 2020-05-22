@@ -28,5 +28,7 @@ extern void vec3_scale(vec3* to_scale, const double scale_by);
 
 extern double vec3_length(const vec3* vec);
 extern double vec3_length_squared(const vec3* vec);
+
 extern double vec3_dot(const vec3* a, const vec3* b);
+extern void vec3_cross(const vec3* a, const vec3* b, vec3* out);
 
