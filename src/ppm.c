@@ -6,12 +6,14 @@ void write_ppm() {
     const int image_width = 256;
     const int image_height = 256;
 
+    fprintf(stderr, "Writing image file...\n");
     printf("P3\n%d %d 255\n", image_width, image_height);
 
     int row, col;
     float r, g, b;
     int ir, ig, ib;
     for(row = image_height - 1; row >= 0; row--) {
+        fprintf(stderr, "Rows left: %d\n", row);
         for(col = 0; col < image_width; col++) {
             r = (float)col / (image_width - 1);
             g = (float)row / (image_height - 1);
@@ -24,4 +26,5 @@ void write_ppm() {
             printf("%d %d %d\n", ir, ig, ib);
         }
     }
+    fprintf(stderr, "Done!\n");
 }
