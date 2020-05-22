@@ -2,6 +2,8 @@
 
 #include "vec3.h"
 
+#include <math.h>
+
 void vec3_negate(vec3* vec) {
     vec->_e0 *= -1;
     vec->_e1 *= -1;
@@ -25,3 +27,18 @@ void vec3_scale(vec3* to_scale, const double scale_by) {
     to_scale->_e1 *= scale_by;
     to_scale->_e2 *= scale_by;
 }
+
+double vec3_length(const vec3* vec) {
+    return sqrt(vec3_length_squared(vec));
+}
+
+double vec3_length_squared(const vec3* vec) {
+    double e0_sqrd, e1_sqrd, e2_sqrd;
+
+    e0_sqrd = vec->_e0 * vec->_e0;
+    e1_sqrd = vec->_e1 * vec->_e1;
+    e2_sqrd = vec->_e2 * vec->_e2;
+
+    return e0_sqrd + e1_sqrd + e2_sqrd;
+}
+
