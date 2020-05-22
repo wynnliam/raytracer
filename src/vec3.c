@@ -48,3 +48,13 @@ double vec3_length_squared(const vec3* vec) {
     return e0_sqrd + e1_sqrd + e2_sqrd;
 }
 
+double vec3_dot(const vec3* a, const vec3* b) {
+    double m0, m1, m2;
+
+    m0 = a->_e0 * b->_e0;
+    m1 = a->_e1 * b->_e1;
+    m2 = a->_e2 * b->_e2;
+
+    return m0 + m1 + m2;
+}
+
