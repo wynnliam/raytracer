@@ -12,12 +12,8 @@
 #define _Y  _e1
 #define _Z  _e2
 
-/*struct vec3 {
-    double _e0, _e1, _e2;
-};*/
-
 typedef struct {
     double _e0, _e1, _e2;
 } vec3;
 
-//typedef struct vec3 color3;
+typedef vec3 color3;
