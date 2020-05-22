@@ -2,6 +2,12 @@
 
 #include "vec3.h"
 
+void vec3_negate(vec3* vec) {
+    vec->_e0 *= -1;
+    vec->_e1 *= -1;
+    vec->_e2 *= -1;
+}
+
 void vec3_add(const vec3* a, const vec3* b, vec3* out) {
     out->_e0 = a->_e0 + b->_e0;
     out->_e1 = a->_e1 + b->_e1;

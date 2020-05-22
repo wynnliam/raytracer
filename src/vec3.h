@@ -18,4 +18,5 @@ typedef struct {
 
 typedef vec3 color3;
 
+extern void vec3_negate(vec3* vec);
 extern void vec3_add(const vec3* a, const vec3* b, vec3* out);
