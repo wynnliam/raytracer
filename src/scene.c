@@ -37,7 +37,7 @@ static vec3 viewport_lower_left_corner;
 
 // Does linear interpolation (lerp) between
 // a light blue and white.
-static color3 background_color(const ray* ray) {
+static color3 ray_color(const ray* ray) {
     color3 result;
 
     vec3 unit_direction = ray->direction;
@@ -85,7 +85,6 @@ void render_scene() {
     printf("P3\n%d %d 255\n", image_width, image_height);
 
     int row, col;
-    float r, g, b;
     int ir, ig, ib;
 
     // Defines the ray for the current row and col.
@@ -122,7 +121,7 @@ void render_scene() {
             vec3_add(&curr_ray.direction, &v_offset, &curr_ray.direction);
             vec3_sub(&curr_ray.direction, &cam_pos, &curr_ray.direction);
 
-            pixel_color = background_color(&curr_ray);
+            pixel_color = ray_color(&curr_ray);
 
             ir = (int)(255 * pixel_color._R);
             ig = (int)(255 * pixel_color._G);
