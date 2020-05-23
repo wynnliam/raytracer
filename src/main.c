@@ -2,11 +2,12 @@
 
 #include <stdio.h>
 
-extern void render_scene();
+#include "scene.h"
 
 int main() {
     fprintf(stderr, "Welcome to my raytracer!\n");
 
+    initialize_renderer();
     render_scene();
 
     return 0;
