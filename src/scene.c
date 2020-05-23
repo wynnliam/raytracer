@@ -35,6 +35,8 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
+// Does linear interpolation (lerp) between
+// a light blue and white.
 static color3 background_color(const ray* ray) {
     color3 result;
 
