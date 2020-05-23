@@ -2,7 +2,7 @@
 
 #include "scene.h"
 
-#include "vec3.h"
+#include "ray.h"
 
 #include <stdio.h>
 
@@ -35,6 +35,25 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
+static color3 background_color(const ray* ray) {
+    color3 result;
+
+    vec3 unit_direction = ray->direction;
+    vec3_unit(&unit_direction, &unit_direction);
+    double t = 0.5 * (unit_direction._Y + 1.0);
+
+    color3 white, a;
+    white._R = 1.0; white._G = 1.0; white._B = 1.0;
+    vec3_scale(&white, 1.0 - t);
+
+    a._R = 0.5; a._G = 0.7; a._B = 1.0;
+    vec3_scale(&a, t);
+
+    vec3_add(&white, &a, &result);
+
+    return result;
+}
+
 void initialize_renderer() {
     cam_pos._X = 0.0; cam_pos._Y = 0.0; cam_pos._Z = 0.0;
 
@@ -66,16 +85,46 @@ void render_scene() {
     int row, col;
     float r, g, b;
     int ir, ig, ib;
+
+    // Defines the ray for the current row and col.
+    ray curr_ray;
+    color3 pixel_color;
+    // Used to define the direction of curr_ray.
+    // They are a percentage of the image width and height
+    // respectively.
+    double u, v;
+    // What we add to lower_left_corner to get curr_ray's
+    // direction.
+    vec3 h_offset, v_offset;
+
+    // All rays begin at the camera position.
+    curr_ray.origin = cam_pos;
+
     for(row = image_height - 1; row >= 0; row--) {
         fprintf(stderr, "Rows left: %d\n", row);
         for(col = 0; col < image_width; col++) {
-            r = (float)col / (image_width - 1);
-            g = (float)row / (image_height - 1);
-            b = 0.25f;
+            // Compute the direction of the next ray.
+            // This is the vector going from the origin
+            // to the pixel at [row, col] on the viewport.
 
-            ir = (int)(255 * r);
-            ig = (int)(255 * g);
-            ib = (int)(255 * b);
+            // Compute the position of the pixel on the screen
+            u = (double)col / (image_width - 1);
+            v = (double)row / (image_height - 1);
+            h_offset = horizontal; vec3_scale(&h_offset, u);
+            v_offset = vertical; vec3_scale(&v_offset, v);
+
+            // ray direction = pixel postion - camera position.
+            // We don't turn this into a unit vector.
+            curr_ray.direction = viewport_lower_left_corner;
+            vec3_add(&curr_ray.direction, &h_offset, &curr_ray.direction);
+            vec3_add(&curr_ray.direction, &v_offset, &curr_ray.direction);
+            vec3_sub(&curr_ray.direction, &cam_pos, &curr_ray.direction);
+
+            pixel_color = background_color(&curr_ray);
+
+            ir = (int)(255 * pixel_color._R);
+            ig = (int)(255 * pixel_color._G);
+            ib = (int)(255 * pixel_color._B);
 
             printf("%d %d %d\n", ir, ig, ib);
         }
