@@ -35,10 +35,30 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
+static int hit_sphere(const vec3* center, const double radius, const ray* ray) {
+    vec3 cent_to_origin;
+    double a, b, c;
+    double discriminant;
+
+    vec3_sub(&(ray->origin), center, &cent_to_origin);
+    a = vec3_dot(&(ray->direction), &(ray->direction));
+    b = 2 * vec3_dot(&cent_to_origin, &(ray->direction));
+    c = vec3_dot(&cent_to_origin, &cent_to_origin) - radius * radius;
+
+    discriminant = b * b - 4 * a * c;
+    return (discriminant > 0);
+}
+
 // Does linear interpolation (lerp) between
 // a light blue and white.
 static color3 ray_color(const ray* ray) {
     color3 result;
+
+    vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = 1};
+    if(hit_sphere(&sphere_center, 0.5, ray)) {
+        result._R = 1; result._G = 0; result._B = 0;
+        return result;
+    }
 
     vec3 unit_direction = ray->direction;
     vec3_unit(&unit_direction, &unit_direction);
