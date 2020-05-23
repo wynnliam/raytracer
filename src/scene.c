@@ -5,6 +5,7 @@
 #include "ray.h"
 
 #include <stdio.h>
+#include "math.h"
 
 /*
     NOTES ABOUT Coordinate system.
@@ -35,7 +36,7 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
-static int hit_sphere(const vec3* center, const double radius, const ray* ray) {
+static double hit_sphere(const vec3* center, const double radius, const ray* ray) {
     vec3 cent_to_origin;
     double a, b, c;
     double discriminant;
@@ -46,7 +47,16 @@ static int hit_sphere(const vec3* center, const double radius, const ray* ray) {
     c = vec3_dot(&cent_to_origin, &cent_to_origin) - radius * radius;
 
     discriminant = b * b - 4 * a * c;
-    return (discriminant > 0);
+
+    if(discriminant < 0) {
+        return -1.0;
+    } else {
+        // Return the value t such that
+        //(P(t) - C) * (P(t) - C) = r^2
+        // P is the ray, C is the center of the sphere,
+        // and r is the sphere's radius.
+        return (-b -sqrt(discriminant)) / (2.0 * a);
+    }
 }
 
 // Does linear interpolation (lerp) between
@@ -55,14 +65,32 @@ static color3 ray_color(const ray* ray) {
     color3 result;
 
     vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
-    if(hit_sphere(&sphere_center, 0.5, ray)) {
-        result._R = 1; result._G = 0; result._B = 0;
+    double t = hit_sphere(&sphere_center, 0.5, ray);
+    if(t >= 0.0) {
+        vec3 at, ar, n;
+        vec3 right = {._e0 = 0, ._e1 = 0, ._e2 = -1};
+        // Compute the ray position at t (a point on the sphere)
+        ray_at(t, ray, &at);
+        // Compute the vector from the origin of the sphere
+        // (which is (0, 0, -1) to the point the ray hit
+        // on the sphere
+        vec3_sub(&at, &right, &ar);
+        // Normalize that.
+        vec3_unit(&ar, &n);
+
+        // Makes all values go from a scale of [-1, 1]
+        // to [0, 1]
+        result._R = n._X + 1;
+        result._G = n._Y + 1;
+        result._B = n._Z + 1;
+        vec3_scale(&result, 0.5);
+
         return result;
     }
 
     vec3 unit_direction = ray->direction;
     vec3_unit(&unit_direction, &unit_direction);
-    double t = 0.5 * (unit_direction._Y + 1.0);
+    t = 0.5 * (unit_direction._Y + 1.0);
 
     color3 white, a;
     white._R = 1.0; white._G = 1.0; white._B = 1.0;
