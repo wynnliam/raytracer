@@ -54,7 +54,7 @@ static int hit_sphere(const vec3* center, const double radius, const ray* ray) {
 static color3 ray_color(const ray* ray) {
     color3 result;
 
-    vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = 1};
+    vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
     if(hit_sphere(&sphere_center, 0.5, ray)) {
         result._R = 1; result._G = 0; result._B = 0;
         return result;
