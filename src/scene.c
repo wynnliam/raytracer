@@ -36,7 +36,7 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
-static double hit_sphere(const vec3* center, const double radius, const ray* ray) {
+static double hit_sphere_DEP(const vec3* center, const double radius, const ray* ray) {
     vec3 cent_to_origin;
     double a, b, c;
     double discriminant;
@@ -65,7 +65,7 @@ static color3 ray_color(const ray* ray) {
     color3 result;
 
     vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
-    double t = hit_sphere(&sphere_center, 0.5, ray);
+    double t = hit_sphere_DEP(&sphere_center, 0.5, ray);
     if(t >= 0.0) {
         vec3 at, ar, n;
         vec3 right = {._e0 = 0, ._e1 = 0, ._e2 = -1};
