@@ -35,6 +35,10 @@ int hit_sphere (const ray* ray, const double t_min, const double t_max, void* da
         vec3_sub(&(result->point), &sphere_center, &normal);
         vec3_unit(&normal, &(result->normal));
 
+        result->front_facing = vec3_dot(&(ray->direction), &(result->normal)) < 0.0;
+        if(!result->front_facing)
+            vec3_negate(&(result->normal));
+
         return 1;
     }
 }

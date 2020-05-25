@@ -18,6 +18,9 @@ typedef struct {
     // If you have the ray that hit the object, you can use
     // it plus this to derive point.
     double t;
+    // If not 0, the ray hit the object from the outside. Otherwise,
+    // we are inside the object
+    int front_facing;
 } hit_record;
 
 typedef struct {
