@@ -41,6 +41,9 @@ static vec3 viewport_lower_left_corner;
 static thing my_sphere;
 static sphere my_sphere_data;
 
+static thing my_floor;
+static sphere floor_sphere_data;
+
 // Does linear interpolation (lerp) between
 // a light blue and white.
 static color3 ray_color(const ray* ray) {
@@ -49,7 +52,8 @@ static color3 ray_color(const ray* ray) {
 
     hit_record record;
 
-    if(my_sphere.hit(ray, 0, 0, my_sphere.data, &record)) {
+    //if(my_sphere.hit(ray, 0, 0, my_sphere.data, &record)) { //|| my_floor.hit(ray, 0, 0, my_floor.data, &record)) {
+    if(my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
         result._R = record.normal._X + 1;
         result._G = record.normal._Y + 1;
         result._B = record.normal._Z + 1;
@@ -98,6 +102,13 @@ void initialize_renderer() {
     my_sphere_data.center._Y = 0;
     my_sphere_data.center._Z = -1;
     my_sphere_data.radius = 0.5;
+
+    my_floor.data = (void*)&floor_sphere_data;
+    my_floor.hit = &(hit_sphere);
+    floor_sphere_data.center._X = 0;
+    floor_sphere_data.center._Y = -100.5;
+    floor_sphere_data.center._Z = -1;
+    floor_sphere_data.radius = 100;
 }
 
 // Renders scene to image file.
