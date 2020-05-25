@@ -52,8 +52,8 @@ static color3 ray_color(const ray* ray) {
 
     hit_record record;
 
-    //if(my_sphere.hit(ray, 0, 0, my_sphere.data, &record)) { //|| my_floor.hit(ray, 0, 0, my_floor.data, &record)) {
-    if(my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
+    if(my_sphere.hit(ray, 0, 50, my_sphere.data, &record) || my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
+    //if(my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
         result._R = record.normal._X + 1;
         result._G = record.normal._Y + 1;
         result._B = record.normal._Z + 1;
