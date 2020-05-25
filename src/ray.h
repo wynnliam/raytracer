@@ -31,7 +31,7 @@ typedef struct {
     int (*hit)(const ray* ray,
                const double t_min, const double t_max,
                void* data, hit_record* result);
-} hittable;
+} thing;
 
 // Return the position of the ray at some moment in time.
 // The formula for this is origin + direction * t.
