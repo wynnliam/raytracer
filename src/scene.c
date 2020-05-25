@@ -3,6 +3,7 @@
 #include "scene.h"
 
 #include "ray.h"
+#include "sphere.h"
 
 #include <stdio.h>
 #include "math.h"
@@ -63,8 +64,25 @@ static double hit_sphere_DEP(const vec3* center, const double radius, const ray*
 // a light blue and white.
 static color3 ray_color(const ray* ray) {
     color3 result;
+    double t;
 
-    vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
+    sphere mySphere;
+    mySphere.center._X = 0;
+    mySphere.center._Y = 0;
+    mySphere.center._Z = -1;
+    mySphere.radius = 0.5;
+    hit_record record;
+
+    if(hit_sphere(ray, 0, 0, (void*)(&mySphere), &record)) {
+        //vec3_scale(&(record.normal), 0.5);
+        result._R = record.normal._X + 1;
+        result._G = record.normal._Y + 1;
+        result._B = record.normal._Z + 1;
+        vec3_scale(&result, 0.5);
+        return result;
+    }
+
+    /*vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
     double t = hit_sphere_DEP(&sphere_center, 0.5, ray);
     if(t >= 0.0) {
         vec3 at, ar, n;
@@ -86,7 +104,7 @@ static color3 ray_color(const ray* ray) {
         vec3_scale(&result, 0.5);
 
         return result;
-    }
+    }*/
 
     vec3 unit_direction = ray->direction;
     vec3_unit(&unit_direction, &unit_direction);

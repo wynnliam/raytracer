@@ -1,5 +1,8 @@
 // Liam Wynn, 5/21/2020, Raytracer
 
+#ifndef VECTOR_3
+#define VECTOR_3
+
 // You can optionally use these when referencing
 // a color. I mean, you don't have to, but I think
 // it makes readability easier.
@@ -32,4 +35,6 @@ extern void vec3_unit(const vec3* vec, vec3* out);
 
 extern double vec3_dot(const vec3* a, const vec3* b);
 extern void vec3_cross(const vec3* a, const vec3* b, vec3* out);
+
+#endif // VECTOR_3
 
