@@ -37,6 +37,9 @@ static vec3 cam_pos;
 static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
+// Elements in the scene
+static sphere my_sphere;
+
 static double hit_sphere_DEP(const vec3* center, const double radius, const ray* ray) {
     vec3 cent_to_origin;
     double a, b, c;
@@ -66,14 +69,9 @@ static color3 ray_color(const ray* ray) {
     color3 result;
     double t;
 
-    sphere mySphere;
-    mySphere.center._X = 0;
-    mySphere.center._Y = 0;
-    mySphere.center._Z = -1;
-    mySphere.radius = 0.5;
     hit_record record;
 
-    if(hit_sphere(ray, 0, 0, (void*)(&mySphere), &record)) {
+    if(hit_sphere(ray, 0, 0, (void*)(&my_sphere), &record)) {
         //vec3_scale(&(record.normal), 0.5);
         result._R = record.normal._X + 1;
         result._G = record.normal._Y + 1;
@@ -81,30 +79,6 @@ static color3 ray_color(const ray* ray) {
         vec3_scale(&result, 0.5);
         return result;
     }
-
-    /*vec3 sphere_center = {._e0 = 0, ._e1 = 0, ._e2 = -1};
-    double t = hit_sphere_DEP(&sphere_center, 0.5, ray);
-    if(t >= 0.0) {
-        vec3 at, ar, n;
-        vec3 right = {._e0 = 0, ._e1 = 0, ._e2 = -1};
-        // Compute the ray position at t (a point on the sphere)
-        ray_at(t, ray, &at);
-        // Compute the vector from the origin of the sphere
-        // (which is (0, 0, -1) to the point the ray hit
-        // on the sphere
-        vec3_sub(&at, &right, &ar);
-        // Normalize that.
-        vec3_unit(&ar, &n);
-
-        // Makes all values go from a scale of [-1, 1]
-        // to [0, 1]
-        result._R = n._X + 1;
-        result._G = n._Y + 1;
-        result._B = n._Z + 1;
-        vec3_scale(&result, 0.5);
-
-        return result;
-    }*/
 
     vec3 unit_direction = ray->direction;
     vec3_unit(&unit_direction, &unit_direction);
@@ -139,6 +113,12 @@ void initialize_renderer() {
 
     to_sub._X = 0.0; to_sub._Y = 0.0; to_sub._Z = FOCAL_LENGTH;
     vec3_sub(&viewport_lower_left_corner, &to_sub, &viewport_lower_left_corner);
+
+    // Initialize objects in scene
+    my_sphere.center._X = 0;
+    my_sphere.center._Y = 0;
+    my_sphere.center._Z = -1;
+    my_sphere.radius = 0.5;
 }
 
 // Renders scene to image file.
