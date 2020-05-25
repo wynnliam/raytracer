@@ -40,29 +40,6 @@ static vec3 viewport_lower_left_corner;
 // Elements in the scene
 static sphere my_sphere;
 
-static double hit_sphere_DEP(const vec3* center, const double radius, const ray* ray) {
-    vec3 cent_to_origin;
-    double a, b, c;
-    double discriminant;
-
-    vec3_sub(&(ray->origin), center, &cent_to_origin);
-    a = vec3_dot(&(ray->direction), &(ray->direction));
-    b = 2 * vec3_dot(&cent_to_origin, &(ray->direction));
-    c = vec3_dot(&cent_to_origin, &cent_to_origin) - radius * radius;
-
-    discriminant = b * b - 4 * a * c;
-
-    if(discriminant < 0) {
-        return -1.0;
-    } else {
-        // Return the value t such that
-        //(P(t) - C) * (P(t) - C) = r^2
-        // P is the ray, C is the center of the sphere,
-        // and r is the sphere's radius.
-        return (-b -sqrt(discriminant)) / (2.0 * a);
-    }
-}
-
 // Does linear interpolation (lerp) between
 // a light blue and white.
 static color3 ray_color(const ray* ray) {
@@ -72,7 +49,6 @@ static color3 ray_color(const ray* ray) {
     hit_record record;
 
     if(hit_sphere(ray, 0, 0, (void*)(&my_sphere), &record)) {
-        //vec3_scale(&(record.normal), 0.5);
         result._R = record.normal._X + 1;
         result._G = record.normal._Y + 1;
         result._B = record.normal._Z + 1;
