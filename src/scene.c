@@ -3,6 +3,7 @@
 #include "scene.h"
 
 #include "ray.h"
+#include "thing.h"
 #include "sphere.h"
 
 #include <stdio.h>
