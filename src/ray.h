@@ -5,6 +5,8 @@
 #ifndef RAY
 #define RAY
 
+#define THING_LIST_SIZE 100
+
 typedef struct {
     vec3 origin;
     vec3 direction;
@@ -23,6 +25,7 @@ typedef struct {
     int front_facing;
 } hit_record;
 
+// TODO: Move to new file thing.h
 typedef struct {
     // Different objects will have this point
     // to different things.
@@ -38,6 +41,11 @@ typedef struct {
                const double t_min, const double t_max,
                void* data, hit_record* result);
 } thing;
+
+typedef struct {
+    thing things[THING_LIST_SIZE];
+    int len;
+} thing_list;
 
 // Return the position of the ray at some moment in time.
 // The formula for this is origin + direction * t.
