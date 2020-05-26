@@ -22,8 +22,11 @@ typedef struct {
 } thing;
 
 typedef struct {
-    thing things[THING_LIST_SIZE];
+    thing* things[THING_LIST_SIZE];
     int len;
 } thing_list;
+
+extern int add_thing_to_list(thing* to_add, thing_list* add_to);
+extern int thing_list_hit(const ray* ray, const double t_min, const double t_max, void* data, hit_record* result);
 
 #endif // THING
