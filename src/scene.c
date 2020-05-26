@@ -39,6 +39,9 @@ static vec3 vertical, horizontal;
 static vec3 viewport_lower_left_corner;
 
 // Elements in the scene
+static thing things;
+static thing_list things_data;
+
 static thing my_sphere;
 static sphere my_sphere_data;
 
@@ -53,8 +56,9 @@ static color3 ray_color(const ray* ray) {
 
     hit_record record;
 
-    if(my_sphere.hit(ray, 0, 50, my_sphere.data, &record) || my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
+    //if(my_sphere.hit(ray, 0, 50, my_sphere.data, &record) || my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
     //if(my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
+    if(things.hit(ray, 0, 100, things.data, &record)) {
         result._R = record.normal._X + 1;
         result._G = record.normal._Y + 1;
         result._B = record.normal._Z + 1;
@@ -97,6 +101,11 @@ void initialize_renderer() {
     vec3_sub(&viewport_lower_left_corner, &to_sub, &viewport_lower_left_corner);
 
     // Initialize objects in scene
+    things.data = (void*)&things_data;
+    things.hit = &thing_list_hit;
+    add_thing_to_list(&my_sphere, &things_data);
+    add_thing_to_list(&my_floor, &things_data);
+
     my_sphere.data = (void*)&my_sphere_data;
     my_sphere.hit = &(hit_sphere);
     my_sphere_data.center._X = 0;
