@@ -11,6 +11,8 @@
 
 #include "utils.h"
 
+#define RAY_COLOR_COMPUTE_DEPTH 50
+
 /*
     NOTES ABOUT Coordinate system.
 
@@ -40,23 +42,39 @@ static sphere floor_sphere_data;
 
 // Does linear interpolation (lerp) between
 // a light blue and white.
-static color3 ray_color(const ray* ray) {
+static color3 ray_color(const ray* curr_ray, const int depth) {
     color3 result;
     double t;
 
     hit_record record;
 
-    //if(my_sphere.hit(ray, 0, 50, my_sphere.data, &record) || my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
-    //if(my_floor.hit(ray, 0, 100, my_floor.data, &record)) {
-    if(things.hit(ray, 0, 100, things.data, &record)) {
-        result._R = record.normal._X + 1;
-        result._G = record.normal._Y + 1;
-        result._B = record.normal._Z + 1;
+    if(depth <= 0) {
+        result._R = 0;
+        result._G = 0;
+        result._B = 0;
+        return result;
+    }
+
+    // Compute diffuse material color.
+    if(things.hit(curr_ray, 0, 100, things.data, &record)) {
+        vec3 target = record.point;
+        vec3 rand_offset;
+
+        vec3_add(&target, &record.normal, &target);
+        vec3_rand_in_unit_sphere(&rand_offset);
+        vec3_add(&target, &rand_offset, &target);
+
+        ray bounce;
+        bounce.origin = record.point;
+        vec3_sub(&target, &record.point, &bounce.direction);
+
+        result = ray_color(&bounce, depth - 1);
+
         vec3_scale(&result, 0.5);
         return result;
     }
 
-    vec3 unit_direction = ray->direction;
+    vec3 unit_direction = curr_ray->direction;
     vec3_unit(&unit_direction, &unit_direction);
     t = 0.5 * (unit_direction._Y + 1.0);
 
@@ -64,7 +82,7 @@ static color3 ray_color(const ray* ray) {
     white._R = 1.0; white._G = 1.0; white._B = 1.0;
     vec3_scale(&white, 1.0 - t);
 
-    a._R = 0.5; a._G = 0.7; a._B = 1.0;
+    a._R = 0.5; a._G = 0.9; a._B = 1.0;
     vec3_scale(&a, t);
 
     vec3_add(&white, &a, &result);
@@ -155,7 +173,7 @@ void render_scene() {
 
                 ray_from_camera(&cam, u, v, &curr_ray);
 
-                vec3 temp_color = ray_color(&curr_ray);
+                vec3 temp_color = ray_color(&curr_ray, RAY_COLOR_COMPUTE_DEPTH);
                 vec3_add(&pixel_color, &temp_color, &pixel_color);
             }
 
