@@ -6,7 +6,9 @@
 #include "sphere.h"
 
 #include <stdio.h>
-#include "math.h"
+#include <math.h>
+
+#include "utils.h"
 
 /*
     NOTES ABOUT Coordinate system.
@@ -112,7 +114,7 @@ void render_scene() {
     fprintf(stderr, "Writing image file...\n");
     printf("P3\n%d %d 255\n", image_width, image_height);
 
-    int row, col;
+    int row, col, s;
     int ir, ig, ib;
 
     // Defines the ray for the current row and col.
@@ -128,25 +130,27 @@ void render_scene() {
     for(row = image_height - 1; row >= 0; row--) {
         fprintf(stderr, "Rows left: %d\n", row);
         for(col = 0; col < image_width; col++) {
-            // Compute the direction of the next ray.
-            // This is the vector going from the origin
-            // to the pixel at [row, col] on the viewport.
+            pixel_color._R = 0;
+            pixel_color._G = 0;
+            pixel_color._B = 0;
 
-            // Compute the position of the pixel on the screen
-            u = (double)col / (image_width - 1);
-            v = (double)row / (image_height - 1);
-            /*h_offset = horizontal; vec3_scale(&h_offset, u);
-            v_offset = vertical; vec3_scale(&v_offset, v);
+            for(s = 0; s < SAMPLES_PER_PIXEL; s++) {
+                // Compute the direction of the next ray.
+                // This is the vector going from the origin
+                // to the pixel at [row, col] on the viewport.
 
-            // ray direction = pixel postion - camera position.
-            // We don't turn this into a unit vector.
-            curr_ray.direction = viewport_lower_left_corner;
-            vec3_add(&curr_ray.direction, &h_offset, &curr_ray.direction);
-            vec3_add(&curr_ray.direction, &v_offset, &curr_ray.direction);
-            vec3_sub(&curr_ray.direction, &cam_pos, &curr_ray.direction);*/
+                // Compute the position of the pixel on the screen
+                u = (col + rand_double()) / (image_width - 1);
+                v = (row + rand_double()) / (image_height - 1);
 
-            ray_from_camera(&cam, u, v, &curr_ray);
-            pixel_color = ray_color(&curr_ray);
+                ray_from_camera(&cam, u, v, &curr_ray);
+
+                vec3 temp_color = ray_color(&curr_ray);
+                vec3_add(&pixel_color, &temp_color, &pixel_color);
+            }
+
+            //pixel_color = ray_color(&curr_ray);
+            vec3_scale(&pixel_color, 1.0 / SAMPLES_PER_PIXEL);
 
             ir = (int)(255 * pixel_color._R);
             ig = (int)(255 * pixel_color._G);
