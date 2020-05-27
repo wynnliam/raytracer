@@ -1,8 +1,21 @@
 // Liam Wynn, 5/21/2020, Raytracer
 
 #include "vec3.h"
+#include "utils.h"
 
 #include <math.h>
+
+void vec3_rand(vec3* result) {
+    result->_X = rand_double();
+    result->_Y = rand_double();
+    result->_Z = rand_double();
+}
+
+void vec3_rand_range(const double min_val, const double max_val, vec3* result) {
+    result->_X = rand_double_range(min_val, max_val);
+    result->_Y = rand_double_range(min_val, max_val);
+    result->_Z = rand_double_range(min_val, max_val);
+}
 
 void vec3_negate(vec3* vec) {
     vec->_e0 *= -1;

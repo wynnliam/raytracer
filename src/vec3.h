@@ -21,6 +21,11 @@ typedef struct {
 
 typedef vec3 color3;
 
+// Vector with x, y, z randomly between 0 and 1.
+extern void vec3_rand(vec3* result);
+// Vector with x, y, z randomly between min and max.
+extern void vec3_rand_range(const double min_val, const double max_val, vec3* result);
+
 extern void vec3_negate(vec3* vec);
 
 extern void vec3_add(const vec3* a, const vec3* b, vec3* out);
