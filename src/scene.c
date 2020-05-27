@@ -135,7 +135,7 @@ void render_scene() {
             // Compute the position of the pixel on the screen
             u = (double)col / (image_width - 1);
             v = (double)row / (image_height - 1);
-            h_offset = horizontal; vec3_scale(&h_offset, u);
+            /*h_offset = horizontal; vec3_scale(&h_offset, u);
             v_offset = vertical; vec3_scale(&v_offset, v);
 
             // ray direction = pixel postion - camera position.
@@ -143,8 +143,9 @@ void render_scene() {
             curr_ray.direction = viewport_lower_left_corner;
             vec3_add(&curr_ray.direction, &h_offset, &curr_ray.direction);
             vec3_add(&curr_ray.direction, &v_offset, &curr_ray.direction);
-            vec3_sub(&curr_ray.direction, &cam_pos, &curr_ray.direction);
+            vec3_sub(&curr_ray.direction, &cam_pos, &curr_ray.direction);*/
 
+            ray_from_camera(&cam, u, v, &curr_ray);
             pixel_color = ray_color(&curr_ray);
 
             ir = (int)(255 * pixel_color._R);
