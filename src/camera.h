@@ -5,6 +5,8 @@
 
 #include "ray.h"
 
+#define SAMPLES_PER_PIXEL   100
+
 typedef struct {
     vec3 origin;
     vec3 horizontal, vertical;
