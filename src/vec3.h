@@ -25,6 +25,9 @@ typedef vec3 color3;
 extern void vec3_rand(vec3* result);
 // Vector with x, y, z randomly between min and max.
 extern void vec3_rand_range(const double min_val, const double max_val, vec3* result);
+// Random vector in unit sphere using the "rejection method": choose random unit vector
+// over and over again until it's inside the unit sphere.
+extern void vec3_rand_in_unit_sphere(vec3* result);
 
 extern void vec3_negate(vec3* vec);
 

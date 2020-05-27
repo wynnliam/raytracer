@@ -17,6 +17,14 @@ void vec3_rand_range(const double min_val, const double max_val, vec3* result) {
     result->_Z = rand_double_range(min_val, max_val);
 }
 
+void vec3_rand_in_unit_sphere(vec3* result) {
+    while(1) {
+        vec3_rand_range(-1, 1, result);
+        if(vec3_length(result) < 1)
+            return;
+    }
+}
+
 void vec3_negate(vec3* vec) {
     vec->_e0 *= -1;
     vec->_e1 *= -1;
