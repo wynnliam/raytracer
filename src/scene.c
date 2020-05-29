@@ -61,7 +61,7 @@ static color3 ray_color(const ray* curr_ray, const int depth) {
         vec3 rand_offset;
 
         vec3_add(&target, &record.normal, &target);
-        vec3_rand_in_unit_sphere(&rand_offset);
+        vec3_rand_unit(&rand_offset);
         vec3_add(&target, &rand_offset, &target);
 
         ray bounce;

@@ -25,6 +25,18 @@ void vec3_rand_in_unit_sphere(vec3* result) {
     }
 }
 
+void vec3_rand_unit(vec3* result) {
+ double a, z, r;
+
+    a = rand_double(0, 2 * PI);
+    z = rand_double_range(-1, 1);
+    r = sqrt(1 - z * z);
+
+    result->_X = r * cos(a);
+    result->_Y = r * sin(a);
+    result->_Z = z;
+}
+
 void vec3_negate(vec3* vec) {
     vec->_e0 *= -1;
     vec->_e1 *= -1;

@@ -28,6 +28,8 @@ extern void vec3_rand_range(const double min_val, const double max_val, vec3* re
 // Random vector in unit sphere using the "rejection method": choose random unit vector
 // over and over again until it's inside the unit sphere.
 extern void vec3_rand_in_unit_sphere(vec3* result);
+// Chooses a random unit vector that is on the unit sphere and not in it.
+extern void vec3_rand_unit(vec3* result);
 
 extern void vec3_negate(vec3* vec);
 
