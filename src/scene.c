@@ -56,7 +56,7 @@ static color3 ray_color(const ray* curr_ray, const int depth) {
     }
 
     // Compute diffuse material color.
-    if(things.hit(curr_ray, 0, 100, things.data, &record)) {
+    if(things.hit(curr_ray, 0.001, 100, things.data, &record)) {
         vec3 target = record.point;
         vec3 rand_offset;
 
