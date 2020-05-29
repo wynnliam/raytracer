@@ -82,7 +82,7 @@ static color3 ray_color(const ray* curr_ray, const int depth) {
     white._R = 1.0; white._G = 1.0; white._B = 1.0;
     vec3_scale(&white, 1.0 - t);
 
-    a._R = 0.5; a._G = 0.9; a._B = 1.0;
+    a._R = 0.5; a._G = 0.7; a._B = 1.0;
     vec3_scale(&a, t);
 
     vec3_add(&white, &a, &result);
@@ -178,7 +178,14 @@ void render_scene() {
             }
 
             //pixel_color = ray_color(&curr_ray);
-            vec3_scale(&pixel_color, 1.0 / SAMPLES_PER_PIXEL);
+            double avg_scale = 1.0 / SAMPLES_PER_PIXEL;
+            //vec3_scale(&pixel_color, avg_scale);
+
+            // Gamma 2 correction:
+            pixel_color._R = sqrt(pixel_color._R * avg_scale);
+            pixel_color._G = sqrt(pixel_color._G * avg_scale);
+            pixel_color._B = sqrt(pixel_color._B * avg_scale);
+
 
             ir = (int)(255 * pixel_color._R);
             ig = (int)(255 * pixel_color._G);
