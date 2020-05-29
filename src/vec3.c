@@ -37,6 +37,16 @@ void vec3_rand_unit(vec3* result) {
     result->_Z = z;
 }
 
+void vec3_rand_hemisphere(vec3* result, const vec3* norm) {
+    vec3 rand_in_unit_sphere;
+    vec3_rand_in_unit_sphere(&rand_in_unit_sphere);
+
+    *result = rand_in_unit_sphere;
+
+    if(vec3_dot(&rand_in_unit_sphere, norm) <= 0.0)
+        vec3_negate(result);
+}
+
 void vec3_negate(vec3* vec) {
     vec->_e0 *= -1;
     vec->_e1 *= -1;
