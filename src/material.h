@@ -18,4 +18,10 @@ typedef struct {
 
 int lambert_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered);
 
+typedef struct {
+    color3 albedo;
+} metal_data;
+
+int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered);
+
 #endif // MATERIAL

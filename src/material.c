@@ -17,3 +17,19 @@ int lambert_scatter(const ray* in, const hit_record* record, color3* attenuation
 
     return 1;
 }
+
+int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
+    metal_data* accessible = (metal_data*)data;
+
+    vec3 reflect;
+    vec3 in_dir_unit;
+
+    vec3_unit(&(in->direction), &in_dir_unit);
+    vec3_reflect(&in_dir_unit, &(record->normal), &reflect);
+
+    scattered->origin = record->point;
+    scattered->direction = reflect;
+    *attenuation = accessible->albedo;
+
+    return vec3_dot(&reflect, &(record->normal)) > 0.0;
+}
