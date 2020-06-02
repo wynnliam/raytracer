@@ -5,6 +5,7 @@
 #include "ray.h"
 #include "thing.h"
 #include "sphere.h"
+#include "material.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -36,9 +37,13 @@ static thing_list things_data;
 
 static thing my_sphere;
 static sphere my_sphere_data;
+static struct material my_sphere_mat;
+static lambert_data my_sphere_lambert;
 
 static thing my_floor;
 static sphere floor_sphere_data;
+static struct material my_floor_mat;
+static lambert_data my_floor_lambert;
 
 // Does linear interpolation (lerp) between
 // a light blue and white.
@@ -113,6 +118,7 @@ void initialize_renderer() {
     vec3_sub(&cam.lower_left_corner, &to_sub, &cam.lower_left_corner);
 
     // Initialize objects in scene
+    // TODO: Add functions for creating material types.
     things.data = (void*)&things_data;
     things.hit = &thing_list_hit;
     add_thing_to_list(&my_sphere, &things_data);
@@ -124,6 +130,12 @@ void initialize_renderer() {
     my_sphere_data.center._Y = 0;
     my_sphere_data.center._Z = -1;
     my_sphere_data.radius = 0.5;
+    my_sphere_data.mat = &my_sphere_mat;
+    my_sphere_mat.data = (void*)(&my_sphere_lambert);
+    my_sphere_mat.scatter_check = &lambert_scatter;
+    my_sphere_lambert.albedo._R = 0.53;
+    my_sphere_lambert.albedo._G = 0.72;
+    my_sphere_lambert.albedo._B = 0.92;
 
     my_floor.data = (void*)&floor_sphere_data;
     my_floor.hit = &(hit_sphere);
@@ -131,6 +143,12 @@ void initialize_renderer() {
     floor_sphere_data.center._Y = -100.5;
     floor_sphere_data.center._Z = -1;
     floor_sphere_data.radius = 100;
+    floor_sphere_data.mat = &my_floor_mat;
+    my_floor_mat.data = (void*)(&my_floor_lambert);
+    my_floor_mat.scatter_check = &lambert_scatter;
+    my_floor_lambert.albedo._R = 0.12;
+    my_floor_lambert.albedo._G = 0.83;
+    my_floor_lambert.albedo._B = 0.43;
 }
 
 // Renders scene to image file.

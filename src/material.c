@@ -14,5 +14,5 @@ int lambert_scatter(const ray* in, const hit_record* record, color3* attenuation
 
     *attenuation = ((lambert_data*)data)->albedo;
 
-    return 0;
+    return 1;
 }
