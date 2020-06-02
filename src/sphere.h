@@ -3,6 +3,7 @@
 #include "ray.h"
 
 typedef struct {
+    struct material* mat;
     vec3 center;
     double radius;
 } sphere;

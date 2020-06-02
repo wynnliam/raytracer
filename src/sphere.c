@@ -34,6 +34,8 @@ int hit_sphere (const ray* ray, const double t_min, const double t_max, void* da
             vec3_sub(&(result->point), &sphere_center, &normal);
             vec3_unit(&normal, &(result->normal));
 
+            result->mat = ((sphere*)data)->mat;
+
             return 1;
         }
 
@@ -45,6 +47,8 @@ int hit_sphere (const ray* ray, const double t_min, const double t_max, void* da
             vec3 normal;
             vec3_sub(&(result->point), &sphere_center, &normal);
             vec3_unit(&normal, &(result->normal));
+
+            result->mat = ((sphere*)data)->mat;
 
             return 1;
         }
