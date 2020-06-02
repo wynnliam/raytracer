@@ -40,6 +40,11 @@ static sphere my_sphere_data;
 static struct material my_sphere_mat;
 static lambert_data my_sphere_lambert;
 
+static thing metal_sphere;
+static sphere metal_sphere_data;
+static struct material metal_sphere_mat;
+static metal_data metal_sphere_metal;
+
 static thing my_floor;
 static sphere floor_sphere_data;
 static struct material my_floor_mat;
@@ -124,6 +129,7 @@ void initialize_renderer() {
     things.hit = &thing_list_hit;
     add_thing_to_list(&my_sphere, &things_data);
     add_thing_to_list(&my_floor, &things_data);
+    add_thing_to_list(&metal_sphere, &things_data);
 
     my_sphere.data = (void*)&my_sphere_data;
     my_sphere.hit = &(hit_sphere);
@@ -137,6 +143,19 @@ void initialize_renderer() {
     my_sphere_lambert.albedo._R = 0.93;
     my_sphere_lambert.albedo._G = 0.00;
     my_sphere_lambert.albedo._B = 0.22;
+
+    metal_sphere.data = (void*)&metal_sphere_data;
+    metal_sphere.hit = &hit_sphere;
+    metal_sphere_data.center._X = 1;
+    metal_sphere_data.center._Y = 0;
+    metal_sphere_data.center._Z = -1;
+    metal_sphere_data.radius = 0.5;
+    metal_sphere_data.mat = &metal_sphere_mat;
+    metal_sphere_mat.data = (void*)&metal_sphere_metal;
+    metal_sphere_mat.scatter_check = &metal_scatter;
+    metal_sphere_metal.albedo._R = 0.5;
+    metal_sphere_metal.albedo._G = 0.5;
+    metal_sphere_metal.albedo._B = 0.6;
 
     my_floor.data = (void*)&floor_sphere_data;
     my_floor.hit = &(hit_sphere);
