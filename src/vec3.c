@@ -114,3 +114,10 @@ void vec3_cross(const vec3* a, const vec3* b, vec3* out) {
     out->_e2 = a->_e0 * b->_e1 - a->_e1 * b->_e0;
 }
 
+void vec3_reflect(const vec3* to_reflect, const vec3* n, vec3* result) {
+    double dot_r_n = vec3_dot(to_reflect, n);
+    vec3 to_sub = *n;
+
+    vec3_scale(&to_sub, 2 * dot_r_n);
+    vec3_sub(to_reflect, &to_sub, result);
+}
