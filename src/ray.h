@@ -7,12 +7,16 @@
 
 #define THING_LIST_SIZE 100
 
+struct material;
+
 typedef struct {
     vec3 origin;
     vec3 direction;
 } ray;
 
 typedef struct {
+    // Material of the object we hit
+    struct material* mat;
     // The point on the object where the ray hit.
     vec3 point;
     // The normal of the surface where the ray hit.
