@@ -62,21 +62,22 @@ static color3 ray_color(const ray* curr_ray, const int depth) {
 
     // Compute diffuse material color.
     if(things.hit(curr_ray, 0.001, 100, things.data, &record)) {
-        vec3 target = record.point;
-        vec3 rand_offset;
+        int does_scatter;
+        color3 attenuation;
+        ray scatter;
 
-        //vec3_add(&target, &record.normal, &target);
-        vec3_rand_hemisphere(&rand_offset, &record.normal);
-        vec3_add(&target, &rand_offset, &target);
+        does_scatter = record.mat->scatter_check(curr_ray, &record, &attenuation, record.mat->data, &scatter);
+        result = attenuation;
 
-        ray bounce;
-        bounce.origin = record.point;
-        vec3_sub(&target, &record.point, &bounce.direction);
+        if(does_scatter) {
+            color3 bounce = ray_color(&scatter, depth - 1);
+            vec3_mul(&result, &bounce, &result);
+            return result;
+        }
 
-        result = ray_color(&bounce, depth - 1);
-
-        vec3_scale(&result, 0.5);
-        return result;
+        result._R = 0;
+        result._G = 0;
+        result._B = 0;
     }
 
     vec3 unit_direction = curr_ray->direction;
@@ -133,9 +134,9 @@ void initialize_renderer() {
     my_sphere_data.mat = &my_sphere_mat;
     my_sphere_mat.data = (void*)(&my_sphere_lambert);
     my_sphere_mat.scatter_check = &lambert_scatter;
-    my_sphere_lambert.albedo._R = 0.53;
-    my_sphere_lambert.albedo._G = 0.72;
-    my_sphere_lambert.albedo._B = 0.92;
+    my_sphere_lambert.albedo._R = 0.93;
+    my_sphere_lambert.albedo._G = 0.00;
+    my_sphere_lambert.albedo._B = 0.22;
 
     my_floor.data = (void*)&floor_sphere_data;
     my_floor.hit = &(hit_sphere);
@@ -146,9 +147,9 @@ void initialize_renderer() {
     floor_sphere_data.mat = &my_floor_mat;
     my_floor_mat.data = (void*)(&my_floor_lambert);
     my_floor_mat.scatter_check = &lambert_scatter;
-    my_floor_lambert.albedo._R = 0.12;
+    my_floor_lambert.albedo._R = 0.62;
     my_floor_lambert.albedo._G = 0.83;
-    my_floor_lambert.albedo._B = 0.43;
+    my_floor_lambert.albedo._B = 0.13;
 }
 
 // Renders scene to image file.

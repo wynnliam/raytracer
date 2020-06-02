@@ -3,10 +3,11 @@
 #include "material.h"
 
 int lambert_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
+
     vec3 scattered_dir;
     vec3 rand_vec;
 
-    vec3_rand(&rand_vec);
+    vec3_rand_hemisphere(&rand_vec, &(record->normal));
     vec3_add(&(record->normal), &rand_vec, &scattered_dir);
 
     scattered->origin = record->point;
