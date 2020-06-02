@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="src/camera.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/camera.h" />
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -42,6 +46,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/scene.h" />
+		<Unit filename="src/sphere.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/sphere.h" />
+		<Unit filename="src/thing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/thing.h" />
+		<Unit filename="src/utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/utils.h" />
 		<Unit filename="src/vec3.c">
 			<Option compilerVar="CC" />
 		</Unit>
