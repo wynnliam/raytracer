@@ -156,6 +156,7 @@ void initialize_renderer() {
     metal_sphere_metal.albedo._R = 0.5;
     metal_sphere_metal.albedo._G = 0.2;
     metal_sphere_metal.albedo._B = 0.6;
+    metal_sphere_metal.fuzz_factor = 0.3;
 
     my_floor.data = (void*)&floor_sphere_data;
     my_floor.hit = &(hit_sphere);
