@@ -154,7 +154,7 @@ void initialize_renderer() {
     metal_sphere_mat.data = (void*)&metal_sphere_metal;
     metal_sphere_mat.scatter_check = &metal_scatter;
     metal_sphere_metal.albedo._R = 0.5;
-    metal_sphere_metal.albedo._G = 0.5;
+    metal_sphere_metal.albedo._G = 0.2;
     metal_sphere_metal.albedo._B = 0.6;
 
     my_floor.data = (void*)&floor_sphere_data;
