@@ -23,12 +23,16 @@ int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, 
 
     vec3 reflect;
     vec3 in_dir_unit;
+    vec3 fuzz;
 
     vec3_unit(&(in->direction), &in_dir_unit);
     vec3_reflect(&in_dir_unit, &(record->normal), &reflect);
 
+    vec3_rand_in_unit_sphere(&fuzz);
+    vec3_scale(&fuzz, accessible->fuzz_factor);
+
     scattered->origin = record->point;
-    scattered->direction = reflect;
+    vec3_add(&fuzz, &reflect, &(scattered->direction));
     *attenuation = accessible->albedo;
 
     return vec3_dot(&reflect, &(record->normal)) > 0.0;
