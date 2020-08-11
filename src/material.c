@@ -39,9 +39,22 @@ int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, 
 }
 
 int dialectric_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
+    dialectric_data* accessible = (dialectric_data*)data;
+
     attenuation->_R = 1.0;
     attenuation->_G = 1.0;
     attenuation->_B = 1.0;
+
+    double etai_over_etat = record->front_facing ? (1.0 / accessible->refract_index) : accessible->refract_index;
+
+    vec3 unit_dir;
+    vec3_unit(&(in->direction), &unit_dir);
+
+    vec3 refract;
+    vec3_refract(&unit_dir, &(record->normal), etai_over_etat, &refract);
+
+    scattered->direction = refract;
+    scattered->origin = record->point;
 
     return 1;
 }

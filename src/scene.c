@@ -175,7 +175,6 @@ void initialize_renderer() {
     glass_sphere_mat.scatter_check = &dialectric_scatter;
     glass_sphere_dialectric.refract_index = 1.5;
 
-
     my_floor.data = (void*)&floor_sphere_data;
     my_floor.hit = &(hit_sphere);
     floor_sphere_data.center._X = 0;
