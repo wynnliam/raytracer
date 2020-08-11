@@ -27,4 +27,10 @@ typedef struct {
 
 int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered);
 
+typedef struct {
+    double refract_index;
+} dialectric_data;
+
+int dialectric_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered);
+
 #endif // MATERIAL

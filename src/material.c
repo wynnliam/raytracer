@@ -37,3 +37,11 @@ int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, 
 
     return vec3_dot(&reflect, &(record->normal)) > 0.0;
 }
+
+int dialectric_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
+    attenuation->_R = 1.0;
+    attenuation->_G = 1.0;
+    attenuation->_B = 1.0;
+
+    return 1;
+}
