@@ -48,6 +48,7 @@ extern double vec3_dot(const vec3* a, const vec3* b);
 extern void vec3_cross(const vec3* a, const vec3* b, vec3* out);
 
 extern void vec3_reflect(const vec3* to_reflect, const vec3* n, vec3* result);
+extern void vec3_refract(const vec3* uv, const vec3* n, const double etai_over_etat, vec3* out);
 
 #endif // VECTOR_3
 
