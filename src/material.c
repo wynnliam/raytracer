@@ -1,6 +1,7 @@
 // Liam Wynn, 6/2/2020, Raytracer
 
 #include "material.h"
+#include "utils.h"
 #include <math.h>
 
 int lambert_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
@@ -39,6 +40,12 @@ int metal_scatter(const ray* in, const hit_record* record, color3* attenuation, 
     return vec3_dot(&reflect, &(record->normal)) > 0.0;
 }
 
+double schlick(const double cos, const double ref_index) {
+    double r0 = (1 - ref_index) / (1 + ref_index);
+    r0 = r0 * r0;
+    return r0 + (1-r0) * pow((1 - cos), 5);
+}
+
 int dialectric_scatter(const ray* in, const hit_record* record, color3* attenuation, void* data, ray* scattered) {
     dialectric_data* accessible = (dialectric_data*)data;
 
@@ -58,6 +65,16 @@ int dialectric_scatter(const ray* in, const hit_record* record, color3* attenuat
     double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
     if(etai_over_etat * sin_theta > 1.0) {
+        vec3 reflect;
+        vec3_reflect(&unit_dir, &record->normal, &reflect);
+        scattered->origin = record->point;
+        scattered->direction = reflect;
+
+        return 1;
+    }
+
+    double reflect_prob = schlick(cos_theta, etai_over_etat);
+    if(rand_double() < reflect_prob) {
         vec3 reflect;
         vec3_reflect(&unit_dir, &record->normal, &reflect);
         scattered->origin = record->point;

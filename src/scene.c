@@ -45,6 +45,11 @@ static sphere metal_sphere_data;
 static struct material metal_sphere_mat;
 static metal_data metal_sphere_metal;
 
+static thing glass_sphere_outer;
+static sphere glass_sphere_outer_data;
+static struct material glass_sphere_out_mat;
+static dialectric_data glass_sphere_out_dialectric;
+
 static thing glass_sphere;
 static sphere glass_sphere_data;
 static struct material glass_sphere_mat;
@@ -135,6 +140,7 @@ void initialize_renderer() {
     add_thing_to_list(&my_sphere, &things_data);
     add_thing_to_list(&my_floor, &things_data);
     add_thing_to_list(&metal_sphere, &things_data);
+    add_thing_to_list(&glass_sphere_outer, &things_data);
     add_thing_to_list(&glass_sphere, &things_data);
 
     my_sphere.data = (void*)&my_sphere_data;
@@ -164,12 +170,23 @@ void initialize_renderer() {
     metal_sphere_metal.albedo._B = 0.6;
     metal_sphere_metal.fuzz_factor = 0.3;
 
+    glass_sphere_outer.data = (void*)&glass_sphere_outer_data;
+    glass_sphere_outer.hit = &hit_sphere;
+    glass_sphere_outer_data.center._X = -1;
+    glass_sphere_outer_data.center._Y = 0;
+    glass_sphere_outer_data.center._Z = -1;
+    glass_sphere_outer_data.radius = 0.5;
+    glass_sphere_outer_data.mat = &glass_sphere_out_mat;
+    glass_sphere_out_mat.data = (void*)&glass_sphere_out_dialectric;
+    glass_sphere_out_mat.scatter_check = &dialectric_scatter;
+    glass_sphere_out_dialectric.refract_index = 1.5;
+
     glass_sphere.data = (void*)&glass_sphere_data;
     glass_sphere.hit = &hit_sphere;
     glass_sphere_data.center._X = -1;
     glass_sphere_data.center._Y = 0;
     glass_sphere_data.center._Z = -1;
-    glass_sphere_data.radius = 0.5;
+    glass_sphere_data.radius = -0.4;
     glass_sphere_data.mat = &glass_sphere_mat;
     glass_sphere_mat.data = (void*)&glass_sphere_dialectric;
     glass_sphere_mat.scatter_check = &dialectric_scatter;

@@ -32,7 +32,9 @@ int hit_sphere (const ray* ray, const double t_min, const double t_max, void* da
 
             vec3 normal;
             vec3_sub(&(result->point), &sphere_center, &normal);
-            vec3_unit(&normal, &(result->normal));
+            //vec3_unit(&normal, &(result->normal));
+            vec3_scale(&normal, 1 / sphere_radius);
+            result->normal = normal;
 
             double dot_dir_normal;
             dot_dir_normal = vec3_dot(&ray->direction, &result->normal);
@@ -53,7 +55,9 @@ int hit_sphere (const ray* ray, const double t_min, const double t_max, void* da
 
             vec3 normal;
             vec3_sub(&(result->point), &sphere_center, &normal);
-            vec3_unit(&normal, &(result->normal));
+            //vec3_unit(&normal, &(result->normal));
+            vec3_scale(&normal, 1 / sphere_radius);
+            result->normal = normal;
 
             double dot_dir_normal;
             dot_dir_normal = vec3_dot(&ray->direction, &result->normal);
